@@ -1,4 +1,5 @@
-﻿using HotelBookingSystem.Models;
+﻿using HotelBookingSystem.DTO;
+using HotelBookingSystem.Models;
 using HotelBookingSystem.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -61,10 +62,15 @@ namespace HotelBookingSystem.Controllers
 
          }*/
         [HttpPost]
-        public async Task<ActionResult<Hotel>> AddHotel([FromBody] Hotel hotel)
+        public async Task<ActionResult<Hotel>> AddHotel([FromBody] HotelDto hotel)
         {
             await _repository.AddHotel(hotel);
-            return CreatedAtAction(nameof(GetByIdHotel), new { id = hotel.HotelId }, hotel);
+
+            
+            /*return CreatedAtAction(nameof(GetByIdHotel), new { id = hotel.HotelId }, hotel);*/
+
+            return Ok(hotel);
+
         }
 
         [HttpPut("{id}")]
@@ -87,9 +93,10 @@ namespace HotelBookingSystem.Controllers
             {
                 return Unauthorized("You are Not authorized");
             }
+            await _repository.DeleteHotel(id);
+            
 
-
-            return Ok(_repository.DeleteHotel(id));
+            return Ok("Deleted Successfully");
 
             /* await _repository.DeleteFlight(id);
              return NoContent();*/

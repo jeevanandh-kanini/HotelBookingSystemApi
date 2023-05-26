@@ -13,6 +13,14 @@ namespace HotelBookingSystem.Models
         public DbSet<Hotel> Hotel { get; set; }
         public DbSet<Room> Room { get; set; }
 
+
+        public DbSet<Customer> Customer { get; set; }
+
+        public DbSet<Booking> Booking { get; set; }
+
+
+
+
         public DbSet<RegisterUser> RegisterUser { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -22,6 +30,20 @@ namespace HotelBookingSystem.Models
                 .HasOne(b => b.Hotel)
                 .WithMany(a => a.Room)
                 .HasForeignKey(p => p.HotelId);
+
+
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Customer)
+                .WithMany(a => a.Booking)
+                .HasForeignKey(p => p.CustId);
+
+            modelBuilder.Entity<Booking>()
+                .HasOne(b => b.Room)
+                .WithMany(a => a.Booking)
+                .HasForeignKey(p => p.RoomId);
+
+
         }
 
 

@@ -73,6 +73,9 @@ namespace HotelBookingSystem.Controllers
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
+
+
+
         }
     }
 }

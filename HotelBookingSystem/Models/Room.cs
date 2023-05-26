@@ -10,6 +10,8 @@
         public int HotelId { get; set; }
         public Hotel? Hotel { get; set; }
 
+        public ICollection<Booking> Booking { get; set; }
+
 
 
     }

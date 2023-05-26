@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelBookingSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230526060101_Migrations")]
+    [Migration("20230526110519_Migrations")]
     partial class Migrations
     {
         /// <inheritdoc />
@@ -47,6 +47,48 @@ namespace HotelBookingSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RegisterUser");
+                });
+
+            modelBuilder.Entity("HotelBookingSystem.Models.Booking", b =>
+                {
+                    b.Property<int>("BookingId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
+
+                    b.Property<int>("CustId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BookingId");
+
+                    b.HasIndex("CustId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("Booking");
+                });
+
+            modelBuilder.Entity("HotelBookingSystem.Models.Customer", b =>
+                {
+                    b.Property<int>("CustId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustId"));
+
+                    b.Property<string>("CustCity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CustId");
+
+                    b.ToTable("Customer");
                 });
 
             modelBuilder.Entity("HotelBookingSystem.Models.Hotel", b =>
@@ -101,6 +143,25 @@ namespace HotelBookingSystem.Migrations
                     b.ToTable("Room");
                 });
 
+            modelBuilder.Entity("HotelBookingSystem.Models.Booking", b =>
+                {
+                    b.HasOne("HotelBookingSystem.Models.Customer", "Customer")
+                        .WithMany("Booking")
+                        .HasForeignKey("CustId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelBookingSystem.Models.Room", "Room")
+                        .WithMany("Booking")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("HotelBookingSystem.Models.Room", b =>
                 {
                     b.HasOne("HotelBookingSystem.Models.Hotel", "Hotel")
@@ -112,9 +173,19 @@ namespace HotelBookingSystem.Migrations
                     b.Navigation("Hotel");
                 });
 
+            modelBuilder.Entity("HotelBookingSystem.Models.Customer", b =>
+                {
+                    b.Navigation("Booking");
+                });
+
             modelBuilder.Entity("HotelBookingSystem.Models.Hotel", b =>
                 {
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("HotelBookingSystem.Models.Room", b =>
+                {
+                    b.Navigation("Booking");
                 });
 #pragma warning restore 612, 618
         }

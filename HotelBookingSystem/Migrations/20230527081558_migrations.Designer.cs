@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelBookingSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230526110519_Migrations")]
-    partial class Migrations
+    [Migration("20230527081558_migrations")]
+    partial class migrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,6 +101,9 @@ namespace HotelBookingSystem.Migrations
 
                     b.Property<string>("AvailableRooms")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AvailableRoomsForBooking")
+                        .HasColumnType("int");
 
                     b.Property<string>("HotelLocation")
                         .HasColumnType("nvarchar(max)");

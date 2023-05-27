@@ -5,7 +5,7 @@
 namespace HotelBookingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class Migrations : Migration
+    public partial class migrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,7 +32,8 @@ namespace HotelBookingSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     HotelName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HotelLocation = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AvailableRooms = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    AvailableRooms = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AvailableRoomsForBooking = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

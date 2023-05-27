@@ -15,6 +15,9 @@ namespace HotelBookingSystem.Models
         public string AvailableRooms { get; set;}
 
 
+        public int AvailableRoomsForBooking { get; set;}    
+
+
         public ICollection<Room> Room { get; set; }
 
     }

@@ -24,7 +24,9 @@ namespace HotelBookingSystem.Repositories
 
                 HotelLocation = hoteldto.HotelLocation,
 
-                AvailableRooms = "0"
+                AvailableRooms = "0",
+
+                AvailableRoomsForBooking=0
 
 
             };
@@ -71,11 +73,17 @@ namespace HotelBookingSystem.Repositories
             if (hotel != null)
             {
                 int availableroom = Int32.Parse(hotel.AvailableRooms);
+
+                int availableroomforbooking = hotel.AvailableRoomsForBooking;
                 // Check if there are available seats
                 if (availableroom >= 0)
                 {
                     // Reduce the available seats by 1
                     availableroom++;
+
+                    availableroomforbooking= availableroomforbooking+1;
+
+                    hotel.AvailableRoomsForBooking = availableroomforbooking;
 
                     hotel.AvailableRooms=availableroom.ToString();
 
@@ -136,11 +144,17 @@ namespace HotelBookingSystem.Repositories
             if (hotel != null)
             {
                 int availableroom = Int32.Parse(hotel.AvailableRooms);
+
+                int availableroomforbooking = hotel.AvailableRoomsForBooking;
                 // Check if there are available seats
                 if (availableroom > 0)
                 {
                     // Reduce the available seats by 1
                     availableroom--;
+
+                    availableroomforbooking--;
+
+                    hotel.AvailableRoomsForBooking = availableroomforbooking;
 
                     hotel.AvailableRooms = availableroom.ToString();
 
@@ -170,7 +184,7 @@ namespace HotelBookingSystem.Repositories
         {
             /*return await _context.Room.Include(a => a.Hotel).ToListAsync();*/
 
-            return await _context.Room.ToListAsync();
+            return await _context.Room.Include(a => a.Hotel).ToListAsync();
         }
 
 
@@ -231,8 +245,24 @@ namespace HotelBookingSystem.Repositories
         }
 
 
-        public async  Task AddCustomer(Customer customer)
+        public async  Task AddCustomer(CustomerDto customerdto)
         {
+            var customer = new Customer()
+            
+                {
+                    CustName = customerdto.CustName,
+
+                    CustCity = customerdto.CustCity
+
+                   
+
+
+                };
+            
+           
+
+           
+
             _context.Customer.Add(customer);
             await _context.SaveChangesAsync();
         }
@@ -270,10 +300,46 @@ namespace HotelBookingSystem.Repositories
         }
 
 
-        public async Task AddBooking(Booking booking)
+        public async Task AddBooking(BookingDto bookingdto)
+
+
         {
-            _context.Booking.Add(booking);
-            await _context.SaveChangesAsync();
+
+
+            var booking = new Booking();
+            var room = await _context.Room.FindAsync(bookingdto.RoomId);
+            if (room != null & room.RoomAvailability!="no")
+            {
+                booking = new Booking()
+                {
+                    CustId = bookingdto.CustId,
+
+                    RoomId = bookingdto.RoomId
+
+                };
+
+                room.RoomAvailability = "no";
+
+                var hotel = await _context.Hotel.FindAsync(room.HotelId);
+
+
+                hotel.AvailableRoomsForBooking = hotel.AvailableRoomsForBooking - 1;
+
+                _context.Booking.Add(booking);
+
+
+                await _context.SaveChangesAsync();
+
+
+
+
+            }
+            else
+            {
+                throw new Exception("Hotel not found.");
+            }
+
+            
         }
 
 
@@ -282,9 +348,33 @@ namespace HotelBookingSystem.Repositories
 
         public async Task DeleteBooking(int id)
         {
+
+
             var booking = await GetByIdBooking(id);
+
+            var room = await _context.Room.FindAsync(booking.RoomId);
+
+            room.RoomAvailability="yes";
+
+            var hotel = await _context.Hotel.FindAsync(room.HotelId);
+
+
+            hotel.AvailableRoomsForBooking++;
+
+
+
+
+
+
+
+
+
             _context.Booking.Remove(booking);
             await _context.SaveChangesAsync();
+
+
+
+
         }
 
 

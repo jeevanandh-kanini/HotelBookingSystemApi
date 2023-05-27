@@ -1,4 +1,5 @@
-﻿using HotelBookingSystem.Models;
+﻿using HotelBookingSystem.DTO;
+using HotelBookingSystem.Models;
 using HotelBookingSystem.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,10 +36,10 @@ namespace HotelBookingSystem.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Booking>> Add([FromBody] Booking booking)
+        public async Task<ActionResult<Booking>> Add([FromBody] BookingDto booking)
         {
             await _repository.AddBooking(booking);
-            return CreatedAtAction(nameof(GetByIdBooking), new { id = booking.BookingId }, booking);
+            return Ok(booking);
         }
 
         

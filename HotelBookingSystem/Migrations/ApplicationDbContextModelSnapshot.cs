@@ -99,6 +99,9 @@ namespace HotelBookingSystem.Migrations
                     b.Property<string>("AvailableRooms")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("AvailableRoomsForBooking")
+                        .HasColumnType("int");
+
                     b.Property<string>("HotelLocation")
                         .HasColumnType("nvarchar(max)");
 

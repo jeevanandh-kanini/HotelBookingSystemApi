@@ -27,7 +27,7 @@ namespace HotelBookingSystem.Repositories
 
         Task<IEnumerable<Customer>> GetAllCustomer();
         Task<Customer> GetByIdCustomer(int id);
-        Task AddCustomer(Customer customer);
+        Task AddCustomer(CustomerDto customerdto);
         Task UpdateCustomer(Customer customer);
         Task DeleteCustomer(int id);
 
@@ -36,7 +36,7 @@ namespace HotelBookingSystem.Repositories
 
         Task<IEnumerable<Booking>> GetAllBooking();
         Task<Booking> GetByIdBooking(int id);
-        Task AddBooking(Booking booking);
+        Task AddBooking(BookingDto bookingdto);
         Task DeleteBooking(int id);
 
 

@@ -61,12 +61,12 @@ namespace HotelBookingSystem.Models
 
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+       /* protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
             optionsBuilder.UseSqlServer("Data Source=LAPTOP-2633JJUA\\MSSQLSERVER02;Initial Catalog=hbs;Integrated Security=True;trustservercertificate=true");
 
-        }
+        }*/
 
 
 

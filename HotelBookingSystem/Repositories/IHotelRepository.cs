@@ -66,6 +66,9 @@ namespace HotelBookingSystem.Repositories
         IEnumerable<Room> GetRoomByRoomType(string roomtype);
 
 
+        IEnumerable<RoomFilterDto> GetRoomByRoomTypeAndLocation(string location, string roomtype);
+
+
 
 
 

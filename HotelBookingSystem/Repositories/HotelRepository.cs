@@ -419,5 +419,24 @@ namespace HotelBookingSystem.Repositories
             return _context.Room.Where(h => h.RoomType == roomtype).Include(r => r.Hotel).ToList();
 
         }
+
+        public IEnumerable<RoomFilterDto> GetRoomByRoomTypeAndLocation(string location,string roomtype)
+        {
+
+            /*return _context.Hotel.Where(h => h.HotelLocation == location).Include(r=> r.Room.Where(room=>room.RoomType==roomtype)).ToList();*/
+
+            return _context.Hotel
+        .Where(h => h.HotelLocation == location)
+        .SelectMany(h => h.Room.Where(room => room.RoomAvailability == "yes" && room.RoomType == roomtype), (h, room) => new RoomFilterDto
+        {
+            HotelName = h.HotelName,
+            HotelLocation = location,
+            RoomNumber = room.RoomNumber,
+            RoomType = room.RoomType,
+            RoomBedCount =room.RoomBedCount
+
+        })
+        .ToList();
+        }
     }
 }

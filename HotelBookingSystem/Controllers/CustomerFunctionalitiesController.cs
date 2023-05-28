@@ -1,4 +1,5 @@
-﻿using HotelBookingSystem.Models;
+﻿using HotelBookingSystem.DTO;
+using HotelBookingSystem.Models;
 using HotelBookingSystem.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -65,6 +66,7 @@ namespace HotelBookingSystem.Controllers
         public IActionResult GetHotelsByLocation(string location)
         {
             IEnumerable<Hotel> hotels = _repository.GetHotelsByLocation(location);
+            
 
             if (hotels == null)
             {
@@ -87,6 +89,25 @@ namespace HotelBookingSystem.Controllers
             }
 
             return Ok(rooms); // Return the list of hotels as a 200 OK response
+        }
+
+
+
+
+
+
+
+        [HttpGet("{roomtype}/RoomWithRoomTypeAndLocation")]
+        public IActionResult GetRoomByRoomTypeAndLocation(string location, string roomtype)
+        {
+            IEnumerable<RoomFilterDto> roomfilter = _repository.GetRoomByRoomTypeAndLocation(location,roomtype);
+
+            if (roomfilter == null)
+            {
+                return NotFound(); // Return 404 Not Found if no hotels are found for the location
+            }
+
+            return Ok(roomfilter); // Return the list of hotels as a 200 OK response
         }
 
 
